@@ -1,7 +1,7 @@
 resource "aws_lb" "backend_alb" {
     name                = "${local.common_name}-backend-alb" # roboshop-dev-backend-alb 
     internal            = true 
-    load_balancer_type  = "applicatio"
+    load_balancer_type  = "application"
     security_groups     = [local.backend_alb_sg_id]
     subnets             = local.private_subnet_ids 
 
@@ -21,7 +21,7 @@ resource "aws_lb_listener" "http" {
     protocol            = "HTTP"
 
     default_action {
-        type = "fixed_response"
+        type = "fixed-response"
 
         fixed_response {
             content_type = "text/html"
@@ -38,10 +38,11 @@ resource "aws_route53_record" "www" {
 
     alias {
         # AWS details 
-        name                    = aws_lb_backend_alb.dns_name
-        zone_id                 = aws_lb_backend_alb.zone_id
+        name                    = aws_lb.backend_alb.dns_name
+        zone_id                 = aws_lb.backend_alb.zone_id
         evaluate_target_health  = true
     }
     allow_overwrite = true 
 }
+
 
