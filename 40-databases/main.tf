@@ -46,7 +46,7 @@ resource "aws_instance" "redis" {
     subnet_id               = local.database_subent_id
     tags = merge(
         {
-            Name = "{local.common_name}-redis"
+            Name = "${local.common_name}-redis"
         },
         local.common_tags
     )
