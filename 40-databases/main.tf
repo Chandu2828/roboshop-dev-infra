@@ -44,7 +44,7 @@ resource "aws_instance" "redis" {
     instance_type           = "t3.micro"
     vpc_security_group_ids  = [local.redis_sg_id]
     subnet_id               = local.database_subent_id
-    tags = merege(
+    tags = merge(
         {
             Name = "{local.common_name}-redis"
         },
