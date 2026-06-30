@@ -1,3 +1,4 @@
+#Executes first 
 resource "aws_instance" "catalogue" {
     ami                     = local.ami_id 
     instance_type           = "t3.micro"
@@ -11,6 +12,7 @@ resource "aws_instance" "catalogue" {
     )
 }
 
+# Executes second 
 resource "terraform_data" "catalogue" {
     triggers_replace = [
         aws_instance.catalogue.id 
@@ -24,7 +26,7 @@ resource "terraform_data" "catalogue" {
     }
 
     provisioner "file" {
-        source = "bootstrap.sh"
+        source      = "bootstrap.sh"
         destination = "tmp/bootstrap.sh"
     }
 
@@ -34,5 +36,14 @@ resource "terraform_data" "catalogue" {
             "sudo sh /tmp/bootstrap.sh catalogue ${var.environment} ${var.app_version}"
         ]
     }
-
 }
+
+# Executes third 
+
+resource "aws_ec2_instance_state" "catalogue"{
+    instance_id = aws_instance.catalogue.id 
+    state       = "stopped"
+    depends_on  = [terraform_data.catalogue]
+}
+
+# depends_on specified that task3 should execute only after task1
