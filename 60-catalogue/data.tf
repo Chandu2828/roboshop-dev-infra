@@ -16,21 +16,21 @@ data "aws_ami" "joindevops" {
 
     filter {
         name = "name"
-        vlaues = ["Redhat-9-DevOps-Practice"]
+        values = ["Redhat-9-DevOps-Practice"]
     }
 
     filter {
         name = "root-device-type"
-        value = ["ebs"]
+        values = ["ebs"]
     }
 
     filter {
         name = "virtualization-type"
-        value = ["hvm"]
+        values = ["hvm"]
     }
 
     filter {
         name = "architecture"
-        value = ["x86_64"]
+        values = ["x86_64"]
     }
 }
