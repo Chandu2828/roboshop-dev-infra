@@ -61,7 +61,7 @@ resource "aws_ami_from_instance" "catalogue" {
 }
 
 resource "aws_launch_template" "catalogue" {
-    name = "${local.common_name}-datalogue"
+    name = "${local.common_name}-catalogue"
     image_id = aws_ami_from_instance.catalogue.id # AMI ID
     instance_initiated_shutdown_behavior = "terminate"
     instance_type = "t3.micro"
@@ -130,7 +130,7 @@ resource "aws_autoscaling_group" "catalogue"{
     force_delete                = false
 
     launch_template {
-        id = aws_launch_template.catalogue.id 
+        id      = aws_launch_template.catalogue.id 
         version = "$Latest"
     }
 
