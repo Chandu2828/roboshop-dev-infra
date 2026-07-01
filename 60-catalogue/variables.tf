@@ -14,6 +14,6 @@ variable "app_version" {
 #     default = "Z007238534KR4DH682ASN"
 # }
 
-# variable "domain_name" {
-#     default = "vnmurthy.online"
-# }
+variable "domain_name" {
+    default = "vnmurthy.online"
+}
