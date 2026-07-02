@@ -49,9 +49,9 @@ resource "aws_ec2_instance_state" "catalogue"{
 # depends_on specified that task3 should execute only after task1
 
 resource "aws_ami_from_instance" "catalogue" {
-    name = "${local.common_name}-catalogue-${var.app_version}-${aws_instance.catalogue.id}" # roboshop-dev-catalogue-v3-<instance_id_of_catalogue_server>
-    source_instance_id = aws_instance.catalogue.id 
-    depends_on = [aws_ec2_instance_state.catalogue]
+    name                = "${local.common_name}-catalogue-${var.app_version}-${aws_instance.catalogue.id}" # roboshop-dev-catalogue-v3-<instance_id_of_catalogue_server>
+    source_instance_id  = aws_instance.catalogue.id 
+    depends_on          = [aws_ec2_instance_state.catalogue]
     tags = merge(
         {
             Name = "${local.common_name}-catalogue-${var.app_version}-${aws_instance.catalogue.id}"
@@ -61,12 +61,12 @@ resource "aws_ami_from_instance" "catalogue" {
 }
 
 resource "aws_launch_template" "catalogue" {
-    name = "${local.common_name}-catalogue"
-    image_id = aws_ami_from_instance.catalogue.id # AMI ID
-    instance_initiated_shutdown_behavior = "terminate"
-    instance_type = "t3.micro"
-    vpc_security_group_ids = [local.catalogue_sg_id]
-    update_default_version = true 
+    name                                    = "${local.common_name}-catalogue"
+    image_id                                = aws_ami_from_instance.catalogue.id # AMI ID
+    instance_initiated_shutdown_behavior    = "terminate"
+    instance_type                           = "t3.micro"
+    vpc_security_group_ids                  = [local.catalogue_sg_id]
+    update_default_version                  = true 
 
     # Once the instanced are created, these will become instace tags
     tag_specifications {
@@ -102,11 +102,11 @@ resource "aws_launch_template" "catalogue" {
 }
 
 resource "aws_lb_target_group" "catalogue" {
-    name = "${local.common_name}-catalogue"
-    port = 8080
-    protocol = "HTTP"
-    vpc_id = local.vpc_id 
-    deregistration_delay = 30 
+    name                    = "${local.common_name}-catalogue"
+    port                    = 8080
+    protocol                = "HTTP"
+    vpc_id                  = local.vpc_id 
+    deregistration_delay    = 30 
 
     health_check {
         healthy_threshold   = 2
@@ -121,7 +121,7 @@ resource "aws_lb_target_group" "catalogue" {
 }
 
 resource "aws_autoscaling_group" "catalogue"{
-    name = "${local.common_name}-catalogue"
+    name                        = "${local.common_name}-catalogue"
     max_size                    = 10
     min_size                    = 1
     health_check_grace_period   = 120
@@ -136,7 +136,7 @@ resource "aws_autoscaling_group" "catalogue"{
 
     vpc_zone_identifier = [local.private_subnet_id]
 
-    target_group_arns = [aws_lb_target_group.catalogue.arn] # Autoscaling launches into specific target group
+    target_group_arns   = [aws_lb_target_group.catalogue.arn] # Autoscaling launches into specific target group
 
     instance_refresh {
         strategy = "Rolling"
@@ -159,7 +159,9 @@ resource "aws_autoscaling_group" "catalogue"{
             propagate_at_launch = true
         }
     }
+
     # with in 15min autoscaling should be successful to launch instances 
+    
     timeouts {
         delete = "15m"
     }
@@ -184,8 +186,8 @@ resource "aws_lb_listener_rule" "catalogue" {
     priority        = 10
 
     action {
-        type = "forward"
-        target_group_arn = aws_lb_target_group.catalogue.arn 
+        type                = "forward"
+        target_group_arn    = aws_lb_target_group.catalogue.arn 
     }
 
     condition {
