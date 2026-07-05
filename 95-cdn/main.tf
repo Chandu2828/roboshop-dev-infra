@@ -19,7 +19,7 @@ resource "aws_cloudfront_distribution" "roboshop" {
     # CDN name 
     aliases = ["${var.project}-cdn.${var.domain_name}"]
 
-    default_cache_behaviour {
+    default_cache_behavior {
         allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
         cached_methods  = ["GET", "HEAD"]
         target_origin_id = "${var.project}-${var.environment}.${var.domain_name}"
@@ -62,7 +62,7 @@ resource "aws_cloudfront_distribution" "roboshop" {
     }
 
     restrictions {
-        geo_restritcion {
+        geo_restriction {
             restriction_type = "none"
             #locations = ["US", "CA", "GB", "DE"]
         }
