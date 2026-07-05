@@ -1,13 +1,14 @@
 resource "aws_cloudfront_distribution" "roboshop" {
+
     origin {
         domain_name = "${var.project}-${var.environment}.${var.domain_name}"
         origin_id   = "${var.project}-${var.environment}.${var.domain_name}"
 
         custom_origin_config {
-            http_port = 80
-            https_port = 443 
-            origin_protocol_policy = "https-only" # Enforce HTTPS to ALB
-            origin_ssl_protocols = ["TLSv1.2"]
+            http_port               = 80
+            https_port              = 443 
+            origin_protocol_policy  = "https-only" # Enforce HTTPS to ALB
+            origin_ssl_protocols    = ["TLSv1.2"]
         }
     }
 
@@ -82,14 +83,14 @@ resource "aws_cloudfront_distribution" "roboshop" {
 
 resource "aws_route53_record" "www" {
     zone_id = var.zone_id 
-    name = "${var.project}-cdn.vnmurthy.online"
-    type = "A"
+    name    = "${var.project}-cdn.vnmurthy.online"
+    type    = "A"
 
     alias {
         #AWS details
-        name = aws_cloudfront_distribution.roboshop.domain_name 
-        zone_id = aws_cloudfront_distribution.roboshop.hosted_zone_id 
-        evaluate_target_health = true 
+        name                    = aws_cloudfront_distribution.roboshop.domain_name 
+        zone_id                 = aws_cloudfront_distribution.roboshop.hosted_zone_id 
+        evaluate_target_health  = true 
     }
     allow_overwrite = true 
 }
