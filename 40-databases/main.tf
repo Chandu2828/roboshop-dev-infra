@@ -31,10 +31,12 @@ resource "terraform_data" "mongodb" {
         destination = "/tmp/bootstrap.sh"
     }
 
+    # executes the file on the localhost
     provisioner "remote-exec" {
         inline = [
             "chmod +x /tmp/bootstrap.sh",
             "sudo sh /tmp/bootstrap.sh mongodb ${var.environment}"
+            # component = mongodb 
         ]
     }
 }
