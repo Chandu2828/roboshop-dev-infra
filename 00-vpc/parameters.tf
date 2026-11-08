@@ -1,3 +1,5 @@
+# It will store the values in the parameter store
+
 resource "aws_ssm_parameter" "vpc_id" {
     name        = "/${var.project}/${var.environment}/vpc_id"
     type        = "String"

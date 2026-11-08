@@ -5,6 +5,7 @@ resource "aws_instance" "bastion"{
     subnet_id               = local.public_subnet_id 
     iam_instance_profile    = aws_iam_instance_profile.bastion.name 
     user_data               = templatefile("${path.module}/bastion.sh.tftpl", {
+        # path.module refers to present location
         partition_number = 4
         extend_size = 30
     })
